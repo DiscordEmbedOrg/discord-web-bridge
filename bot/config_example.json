@@ -1,0 +1,8 @@
+{
+  "crossbar": {
+    "ws": "http://localhost:8080/ws"
+  },
+  "discord": {
+    "bot_token": ""
+  }
+}

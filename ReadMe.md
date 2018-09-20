@@ -32,11 +32,11 @@ Start the web server. See ReadMe in webclient folder.
 ## TODOs
 
 - [ ] Create Crossbar router
-  - [ ] Basic Crossbar router configuration
+  - [x] Basic Crossbar router configuration
   - [ ] Bot Authentication: Only authenticated Discord Bot can publish to Crossbar router
-- [ ] Create the Discord bot
-  - [ ] OnMessage: Publish to Crossbar
-  - [ ] OnRPC: Send message
+- [x] Create the Discord bot
+  - [x] OnMessage: Publish to Crossbar
+  - [x] OnRPC: Send message
 - [ ] Create the Website
   - [ ] Subscribe to Crossbar
   - [ ] OnEvent: visualize message
