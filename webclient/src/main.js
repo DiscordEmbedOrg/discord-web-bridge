@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import './static/js/autobahn.min.js'
+//import json from './config.json'
 
 Vue.config.productionTip = false
 

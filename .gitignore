@@ -3,3 +3,4 @@ client/
 bot/config.json
 */__pycache__/
 experiment/
+webclient/src/config.json
