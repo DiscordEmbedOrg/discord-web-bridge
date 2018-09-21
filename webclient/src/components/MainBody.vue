@@ -5,6 +5,8 @@
     <input type="text" v-model="message.content" placeholder="Content">
     <input type="text" v-model="message.channel_id" placeholder="Channel">
     <button v-on:click="send_message">Send</button>
+    <button v-on:click="retrieve_history">Test</button>
+    <button v-on:click="get_subscription">get sub</button>
     <div>{{ received_message }}</div>
   </div>
 </template>
@@ -24,7 +26,8 @@ export default {
         content: "",
         channel_id: "398907517326852097"
       },
-      received_message: null
+      received_message: null,
+      subscription: null
     }
   },
   created: function () {
@@ -42,7 +45,12 @@ export default {
         that.received_message = args[0]
       }
       console.log("Subscribing to topic.")
-      session.subscribe("nntin.github.discord-web-bridge.message.398907517326852097", on_message);
+      session.subscribe("nntin.github.discord-web-bridge.message.398907517326852097", on_message).then(
+        function (res) {
+          that.subscription = res
+        }
+      );
+
     };
     connection.open();
 
@@ -68,6 +76,24 @@ export default {
           }
         )
       }
+    },
+    retrieve_history: function() {
+      if(typeof window.session !== "undefined") {
+        window.session.call('wamp.subscription.get_events', [this.subscription.id, 20]).then(
+          function (history) {
+            console.log("got history for " + history.length + " events");
+            for (var i = 0; i < history.length; ++i) {
+              console.log(history[i].timestamp, history[i].publication, history[i].args[0]);
+            }
+          },
+          function (err) {
+            console.log("could not retrieve event history", err);
+          }
+        );
+      }
+    },
+    get_subscription: function() {
+      console.log(this.subscription.id)
     }
   }
 }

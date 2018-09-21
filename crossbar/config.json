@@ -30,7 +30,16 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "store": {
+                        "type": "memory",
+                        "event-history": [
+                            {
+                                "uri": "nntin.github.discord-web-bridge.message.398907517326852097",
+                                "limit": 10
+                            }
+                        ]
+                    }
                 }
             ],
             "transports": [

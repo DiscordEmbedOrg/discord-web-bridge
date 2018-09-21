@@ -34,6 +34,7 @@ Start the web server. See ReadMe in webclient folder.
 - [ ] Create Crossbar router
   - [x] Basic Crossbar router configuration
   - [ ] Bot Authentication: Only authenticated Discord Bot can publish to Crossbar router
+  - [x] Store message history
 - [x] Create the Discord bot
   - [x] OnMessage: Publish to Crossbar
   - [x] OnRPC: Send message
@@ -41,4 +42,5 @@ Start the web server. See ReadMe in webclient folder.
   - [x] Subscribe to Crossbar
   - [x] OnEvent: visualize message
   - [x] Allow web clients to perform RPC
+  - [x] Retrieve message history
   - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
