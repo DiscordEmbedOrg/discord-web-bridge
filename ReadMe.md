@@ -38,7 +38,7 @@ Start the web server. See ReadMe in webclient folder.
   - [x] OnMessage: Publish to Crossbar
   - [x] OnRPC: Send message
 - [ ] Create the Website
-  - [ ] Subscribe to Crossbar
-  - [ ] OnEvent: visualize message
-  - [ ] Allow web clients to perform RPC
+  - [x] Subscribe to Crossbar
+  - [x] OnEvent: visualize message
+  - [x] Allow web clients to perform RPC
   - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**

@@ -1,7 +1,7 @@
 # Setup
 
 * Get Python 3.6 with pip
-* fill out config_example.json and rename it to config.json
+* Fill out config_example.json and rename it to config.json.
 
 ```commandline
 cd discord-web-bridge/bot
