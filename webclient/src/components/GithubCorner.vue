@@ -1,7 +1,7 @@
 <template>
   <div class="github-corner">
     <svg width="120" height="120" viewBox="0 0 250 250">
-      <a :fill="discordcolor" href="https://github.com/NNTin/discord-icon-gen" style="pointer-events:auto">
+      <a :fill="discordcolor" href="https://github.com/NNTin/discord-web-bridge" style="pointer-events:auto">
         <path d="M0,0 L250,250 L250,0 Z"></path>
       </a>
       <g class="octocat">

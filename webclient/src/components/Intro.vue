@@ -2,8 +2,6 @@
   <div class="hello">
     <header>
       <h1>Discord Web Bridge</h1>
-      <p>The web client of discord-web-bridge.</p>
-      <p>If you need help, feel free joining <a href="https://discord.gg/Dkg79tc">my server</a>.</p>
     </header>
   </div>
 </template>
@@ -27,7 +25,7 @@ header {
   padding-bottom: 15px;
   max-width: 580px;
   margin: auto;
-  text-align: left;
+  text-align: middle;
 }
 
 </style>

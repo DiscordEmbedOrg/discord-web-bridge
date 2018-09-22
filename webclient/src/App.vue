@@ -4,6 +4,7 @@
       <GithubCorner :discordcolor="colors.discordfill" :discordfill="colors.discordcolor"/>
       <DiscordCorner :background="background" :discordEyes="discordEyes" customLink="https://discord.gg/Dkg79tc" :isRainbow="isRainbow" :animationStyle="animationStyle" id="discordcorner" :discordcolor="colors.discordfill" :discordfill="colors.discordcolor"/>
       <Intro/>
+      <DiscordText :background="background" :discordEyes="discordEyes" :isRainbow="isRainbow" :animationStyle="animationStyle" ref="discordtext" :standardText="standardText" :discordfill="colors.discordfill" :discordcolor="colors.discordcolor" />
     </div>
     <MainBody/>
   </div>
@@ -14,11 +15,12 @@ import Intro from './components/Intro.vue'
 import DiscordCorner from './components/DiscordCorner.vue'
 import GithubCorner from './components/GithubCorner.vue'
 import MainBody from './components/MainBody.vue'
+import DiscordText from './components/DiscordText.vue'
 
 export default {
   name: 'App',
   components: {
-    Intro, DiscordCorner, GithubCorner, MainBody
+    Intro, DiscordCorner, GithubCorner, MainBody, DiscordText
   },
   data () {
     return {
@@ -26,7 +28,7 @@ export default {
       discordEyes: 'none',
       isRainbow: false,
       animationStyle: 'swirl',
-      standardText: 'Join my Discord server!',
+      standardText: "",
       previewDiscordType: 'standard',
       colors: {
         discordcolor: '#FFFFFF',
@@ -43,6 +45,17 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    updateSpeechBubble: function () {
+      var myArray = ["This is the web client to discord-web-bridge (ง°ل͜°)ง",
+                     "Built with ♥ by NNTin ≧◡≦"];
+      var rand = myArray[Math.floor(Math.random() * myArray.length)];
+      this.standardText = rand;
+    }
+  },
+  created: function () {
+    this.updateSpeechBubble()
   }
 }
 </script>

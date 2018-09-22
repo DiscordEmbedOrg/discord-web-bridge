@@ -1,5 +1,6 @@
 import asyncio
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
+from autobahn.wamp.types import PublishOptions
 from bot.config import config
 from discord.ext.commands import Bot
 from discord import Embed
@@ -7,6 +8,7 @@ from datetime import datetime
 import random
 import json
 from discord.embeds import _EmptyEmbed
+
 
 event_loop = asyncio.get_event_loop()
 client = Bot(command_prefix=">>")
@@ -86,7 +88,7 @@ class Component(ApplicationSession):
             # self.publish("nntin.github.discord-web-bridge.message", payload)
             self.publish("nntin.github.discord-web-bridge.message.{channel_id}".format(
                 channel_id=message.channel.id
-            ), json.dumps(payload))
+            ), payload, options=PublishOptions(retain=True))
 
         event_loop.create_task(client.start(config["discord"]["bot_token"], bot=True, reconnect=True))
 
