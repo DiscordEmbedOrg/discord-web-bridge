@@ -31,16 +31,36 @@ Start the web server. See ReadMe in webclient folder.
 
 ## TODOs
 
-- [ ] Create Crossbar router
+Basic:
+
+- [x] Create Crossbar router
   - [x] Basic Crossbar router configuration
-  - [ ] Bot Authentication: Only authenticated Discord Bot can publish to Crossbar router
   - [x] Store message history
 - [x] Create the Discord bot
   - [x] OnMessage: Publish to Crossbar
   - [x] OnRPC: Send message
-- [ ] Create the Website
+- [x] Create the Website
   - [x] Subscribe to Crossbar
   - [x] OnEvent: visualize message
   - [x] Allow web clients to perform RPC
   - [x] Retrieve message history
-  - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
+
+Extended:
+- [ ] Bot Authentication: Only authenticated Discord Bot can publish to Crossbar router
+- [ ] Optional web client authentication: Privileged users with secret token have more power
+- [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
+- [ ] RPC: Get text channels (for multi-text channel support)
+
+## Security and Risks
+
+The Discord Bot will broadcast **all** messages it has access to. If you don't want the message to be broadcasted, take away the read message right for the text channel.  
+This means anyone can read those messages if they have the technical know how of talking to my backend.
+
+Anyone who is connected can post a chat message and there is no tracking who did it. There is no verification in place. A spammer could abuse this and send spam messages on behalf of the bot.
+
+I plan on addressing those issues. Just bear in mind they exist when making use of this project which is still in its very early stage.
+
+## Public Bot
+
+I plan on releasing a public bot that supports multiple servers. However for now I am solely focusing on a single server.  
+A public bot that allows anyone to chat in any registered server without any form of authentication is at risk of being spammed at.

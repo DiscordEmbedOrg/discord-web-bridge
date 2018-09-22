@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import './static/js/autobahn.min.js'
-//import json from './config.json'
+import './static/css/discord.css'
 
 Vue.config.productionTip = false
 

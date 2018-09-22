@@ -1,6 +1,6 @@
 <template>
   <div id="mainbody">
-    <div>{{ received_message }}</div>
+    <!--<div>{{ received_message }}</div>-->
     <div id="chat_window">
       <div id="chat_configuration">
         <input type="text" v-model="form_message.user" placeholder="Your user name">
@@ -9,19 +9,48 @@
         <button v-on:click="retrieve_history">retrieve history</button>
         <button v-on:click="test_method">test</button>
       </div>
-      <div id="chat_messages_box">
+
+
+            <div id="chat_send_message_box">
+              <input type="text_method" v-model="form_message.content" placeholder="Content">
+              <button v-on:click="send_message">Send</button>
+            </div>
+
+
+<div class="theme-dark">
+  <div class="messagesWrapper-3lZDfY">
+    <div class="scroller-wrap scrollerWrap-2su1QI">
+      <div class="messages-3amgkR scroller">
         <div v-for="message in messages">
-          <span class="discord-avatar">
-            <img :src="message.user_avatar" alt="https://i.imgur.com/Hqq6ii1.png">
-          </span>
-          <span>{{ message.user }}</span>
-          <span>{{ message.content }}</span>
+          <div class="containerCozyBounded-1rKFAn containerCozy-jafyvG container-1YxwTf">
+            <div class="messageCozy-2JPAPA message-1PNnaP">
+              <div class="headerCozy-2N9HOL">
+                <div class="wrapper-2F3Zv8 large-3ChYtB avatar-17mtNa" tabindex="-1">
+                  <div class="image-33JSyf large-3ChYtB">
+                    <img class="image-33JSyf large-3ChYtB" :src="message.user_avatar">
+                  </div>
+                </div>
+                <h2 class="headerCozyMeta-rdohGq">
+                  <span class="usernameWrapper-1S-G5O">{{ message.user }}</span>
+                </h2>
+                <time class="timestampCozy-2hLAPV" :datetime="message.created_at"></time>
+              </div>
+              <div class="contentCozy-3XX413 content-3dzVd8">
+                <div class="containerCozy-336-Cz container-206Blv">
+                  <div class="markup-2BOw-j">{{ message.content }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div id="chat_send_message_box">
-        <input type="text_method" v-model="form_message.content" placeholder="Content">
-        <button v-on:click="send_message">Send</button>
-      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
     </div>
   </div>
 </template>
@@ -66,15 +95,16 @@ export default {
       function on_message(args) {
         that.received_message = args[0]
         that.messages.push(args[0])
-        while (that.messages.length > 10) {
-          that.messages.shift();
-        }
+        //while (that.messages.length > 10) {
+        //  that.messages.shift();
+        //}
         console.log(that.received_message)
       }
       console.log("Subscribing to topic.")
       session.subscribe("nntin.github.discord-web-bridge.message.398907517326852097", on_message).then(
         function (res) {
           that.subscription = res
+          that.retrieve_history()
         }
       );
 
@@ -133,13 +163,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #mainbody {
-  color: #000000
+  color: #000000;
 }
 
-#chat_messages_box .discord-avatar img {
-  border-radius: 8px;
-  height: 16px;
-  width: 16px;
+
+.messagesWrapper-3lZDfY {
+  height: 500px;
+  width: 500px;
+  text-align:start;
 }
+
+
 
 </style>
