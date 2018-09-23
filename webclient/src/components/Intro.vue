@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <header>
       <h1>Discord Web Bridge</h1>
     </header>
@@ -19,13 +19,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 header {
-  padding-right: 20px;
-  padding-left: 20px;
-  padding-top: 50px;
+  padding-top: 30px;
   padding-bottom: 15px;
-  max-width: 580px;
-  margin: auto;
-  text-align: middle;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 </style>

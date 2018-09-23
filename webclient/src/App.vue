@@ -51,7 +51,11 @@ export default {
   methods: {
     updateSpeechBubble: function () {
       var myArray = ["This is the web client to discord-web-bridge (ง°ل͜°)ง",
-                     "Built with ♥ by NNTin ≧◡≦"];
+                     "Built with ♥ by NNTin ≧◡≦",
+                     "Hold on. This UI... Isn't this the Discord Client? 乁ʕ •̀ ۝ •́ ʔㄏ",
+                     "ԅ[ •́ ﹏├┬┴┬┴ Fork me and create a more minimalistic looking client!",
+                     "Message history is enabled on a select few channels (-_-｡)",
+                     "Suggestions, Bugs? Contact me on Discordc (ˊᗜˋ*c)"];
       var rand = myArray[Math.floor(Math.random() * myArray.length)];
       this.standardText = rand;
     }
@@ -79,7 +83,7 @@ html,body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #FFFFFF;
+  color: #fff;
   height: 100%;
 }
 #top {

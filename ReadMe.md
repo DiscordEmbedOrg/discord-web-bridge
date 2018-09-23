@@ -17,6 +17,10 @@ Discord bot "publishes" to the crossbar router when a message was posted in a te
 
 When the web client wants to say something he does a Remote Procedure Call. Some information is passed such as username and message. The Discord Bot receives it, processes it and posts a message on behalf of the web client.
 
+## Demo
+
+[![YT Video](https://img.youtube.com/vi/14Vnpu_h1TY/0.jpg)](https://www.youtube.com/watch?v=14Vnpu_h1TY)
+
 ## Support
 
 Basic knowledge about maintaining a VPS and working with Python and Node are required.
@@ -50,6 +54,15 @@ Extended:
 - [ ] Optional web client authentication: Privileged users with secret token have more power
 - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
 - [ ] RPC: Get text channels (for multi-text channel support)
+- [ ] RPC: Get servers (for multi-server support)
+- [ ] Markdown support
+- [ ] Link formatting support
+- [ ] Emoji support
+- [ ] Discord syntax support (<@userid>, <#channel_id>, ...)
+
+## Issues
+
+- Message history can't be retrieved: Message history is only implemented in pre-approved text channels. (See crossbar router config.)
 
 ## Security and Risks
 
@@ -63,4 +76,4 @@ I plan on addressing those issues. Just bear in mind they exist when making use 
 ## Public Bot
 
 I plan on releasing a public bot that supports multiple servers. However for now I am solely focusing on a single server.  
-A public bot that allows anyone to chat in any registered server without any form of authentication is at risk of being spammed at.
+A public bot that allows anyone to chat in any registered server without any form of authentication is at risk of being used as a tool to spam.  

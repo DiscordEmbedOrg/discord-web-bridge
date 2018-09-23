@@ -14,7 +14,7 @@
                             "name": "anonymous",
                             "permissions": [
                                 {
-                                    "uri": "",
+                                    "uri": "nntin.github.discord-web-bridge.",
                                     "match": "prefix",
                                     "allow": {
                                         "call": true,
@@ -36,7 +36,7 @@
                         "event-history": [
                             {
                                 "uri": "nntin.github.discord-web-bridge.message.398907517326852097",
-                                "limit": 10
+                                "limit": 50
                             }
                         ]
                     }

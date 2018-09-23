@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="debug">
+    <div class="debug" style="display: none">
       <div>
         <input type="text" v-model="form_message.user" placeholder="Your user name">
         <input type="text" v-model="form_message.user_avatar" placeholder="Avatar URL">
@@ -10,7 +10,6 @@
       </div>
       <div id="chat_send_message_box">
         <input type="text_method" v-model="form_message.content" placeholder="Content">
-        <button v-on:click="send_message">Send</button>
       </div>
     </div>
     <div class="discord-nntin-embed flex-1xMQg5 flex-1O1GKY horizontal-1ae9ci horizontal-2EEEnY flex-1O1GKY directionRow-3v3tfG justifyStart-2NDFzi alignStretch-DpGPf3 noWrap-3jynv6 spacer-29U_x8">
@@ -78,7 +77,7 @@
           <div class="flex-spacer flex-vertical">
             <div class="messagesWrapper-3lZDfY">
               <div class="scroller-wrap scrollerWrap-2su1QI">
-                <div class="messages-3amgkR scroller">
+                <div class="messages-3amgkR scroller" id="scroller">
                   <div v-for="message in messages">
                     <div class="containerCozyBounded-1rKFAn containerCozy-jafyvG container-1YxwTf">
                       <div class="messageCozy-2JPAPA message-1PNnaP">
@@ -123,7 +122,7 @@
                     <div class="file-input" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
                     </div>
                   </div>-->
-                  <textarea v-model="form_message.content" rows="1" placeholder="Message #aaa" tabindex="1" class="textArea-2Spzkt textArea-2Spzkt scrollbarGhostHairline-1mSOM1 scrollbar-3dvm_9" style="height: auto;" />
+                  <textarea autofocus v-model="form_message.content" rows="1" @keyup.13.enter="send_message" placeholder="Message #aaa" tabindex="1" class="textArea-2Spzkt textArea-2Spzkt scrollbarGhostHairline-1mSOM1 scrollbar-3dvm_9" style="height: auto;" />
                   <!--<button tabindex="2" type="button" class="emojiButtonNormal-TdumYh emojiButton-3uL3Aw emojiButton-2wRZts button-38aScr lookBlank-3eh9lL colorBrand-3pXr91 grow-q77ONN">
                     <div class="contents-18-Yxp">
                       <div class="spriteNormal-1wvG5n sprite-2iCowe" style="background-position: 0px 0px; background-size: 242px 110px;">
@@ -163,10 +162,35 @@ export default {
         user: "",
         user_avatar: ""
       },
-      subscription: null
+      subscription: null,
+      usernames: ['Anti-Mage', 'Axe', 'Bane', 'Bloodseeker', 'Crystal Maiden',
+        'Drow Ranger', 'Earthshaker', 'Juggernaut', 'Mirana', 'Shadow Fiend',
+        'Morphling', 'Phantom Lancer', 'Puck', 'Pudge', 'Razor', 'Sand King',
+        'Storm Spirit', 'Sven', 'Tiny', 'Vengeful Spirit', 'Windranger', 'Zeus',
+        'Kunkka', 'Lina', 'Lich', 'Lion', 'Shadow Shaman', 'Slardar', 'Tidehunter',
+        'Witch Doctor', 'Riki', 'Enigma', 'Tinker', 'Sniper', 'Necrophos', 'Warlock',
+        'Beastmaster', 'Queen of Pain', 'Venomancer', 'Faceless Void', 'Wraith King',
+        'Death Prophet', 'Phantom Assassin', 'Pugna', 'Templar Assassin', 'Viper',
+        'Luna', 'Dragon Knight', 'Dazzle', 'Clockwerk', 'Leshrac', "Nature's Prophet",
+        'Lifestealer', 'Dark Seer', 'Clinkz', 'Omniknight', 'Enchantress', 'Huskar',
+        'Night Stalker', 'Broodmother', 'Bounty Hunter', 'Weaver', 'Jakiro', 'Batrider',
+        'Chen', 'Spectre', 'Doom', 'Ancient Apparition', 'Ursa', 'Spirit Breaker',
+        'Gyrocopter', 'Alchemist', 'Invoker', 'Silencer', 'Outworld Devourer', 'Lycan',
+        'Brewmaster', 'Shadow Demon', 'Lone Druid', 'Chaos Knight', 'Meepo',
+        'Treant Protector', 'Ogre Magi', 'Undying', 'Rubick', 'Disruptor',
+        'Nyx Assassin', 'Naga Siren', 'Keeper of the Light', 'Io', 'Visage', 'Slark',
+        'Medusa', 'Troll Warlord', 'Centaur Warrunner', 'Magnus', 'Timbersaw',
+        'Bristleback', 'Tusk', 'Skywrath Mage', 'Abaddon', 'Elder Titan',
+        'Legion Commander', 'Ember Spirit', 'Earth Spirit', 'Terrorblade', 'Phoenix', 
+        'Oracle', 'Techies', 'Winter Wyvern', 'Arc Warden', 'Underlord', 'Monkey King',
+        'Pangolier', 'Dark Willow', 'Grimstroke']
     }
   },
   created: function () {
+    var index = Math.floor(Math.random() * this.usernames.length);
+    this.form_message.user = this.usernames[index] + " " + Math.floor(Math.random() * 100000).toString()
+
+
     var connection = new autobahn.Connection({
       url: this.myJson.ws,
       realm: 'realm1'
@@ -184,6 +208,11 @@ export default {
         //  that.messages.shift();
         //}
         console.log(that.received_message)
+
+        that.$nextTick(function () {
+          var scroller = document.getElementById("scroller");
+          scroller.scrollTop = scroller.scrollHeight;
+        });
       }
       console.log("Subscribing to topic.")
       session.subscribe("nntin.github.discord-web-bridge.message.398907517326852097", on_message).then(
@@ -196,15 +225,13 @@ export default {
     };
     connection.open();
 
-
-
   },
   methods: {
     update: function() {
       console.log("hello")
     },
-    send_message: function() {
-      if(typeof window.session !== "undefined") {
+    send_message: function(event) {
+      if(typeof window.session !== "undefined" && event.which == 13 && !event.shiftKey) {
         var payload = {
           "author_name": this.form_message.user,
           "author_avatar_url": this.form_message.user_avatar,
@@ -217,8 +244,8 @@ export default {
             console.log("Result:", res);
           }
         )
+        this.form_message.content = "";
       }
-      this.form_message.content = "";
     },
     retrieve_history: function() {
       var that = this
@@ -233,6 +260,11 @@ export default {
             }
             //that.messages = history;
             console.log(that.messages)
+
+            that.$nextTick(function () {
+              var scroller = document.getElementById("scroller");
+              scroller.scrollTop = scroller.scrollHeight;
+            });
           },
           function (err) {
             console.log("could not retrieve event history", err);
@@ -273,6 +305,10 @@ export default {
 
 .inner-zqa7da {
   background-color:rgba(114, 118, 125, 0.298039);
+}
+
+.textArea-2Spzkt {
+  color: #fff;
 }
 
 

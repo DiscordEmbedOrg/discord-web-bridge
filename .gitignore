@@ -4,3 +4,4 @@ bot/config.json
 */__pycache__/
 experiment/
 webclient/src/config.json
+crossbar/advanced_config.json
