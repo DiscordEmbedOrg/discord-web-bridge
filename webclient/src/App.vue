@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <div id="top" :style="getBackgroundColor">
-      <GithubCorner :discordcolor="colors.discordfill" :discordfill="colors.discordcolor"/>
-      <DiscordCorner :background="background" :discordEyes="discordEyes" customLink="https://discord.gg/Dkg79tc" :isRainbow="isRainbow" :animationStyle="animationStyle" id="discordcorner" :discordcolor="colors.discordfill" :discordfill="colors.discordcolor"/>
-      <Intro/>
-      <DiscordText :background="background" :discordEyes="discordEyes" :isRainbow="isRainbow" :animationStyle="animationStyle" ref="discordtext" :standardText="standardText" :discordfill="colors.discordfill" :discordcolor="colors.discordcolor" />
+    <div class="wrapper">
+      <div id="top" :style="getBackgroundColor">
+        <GithubCorner :discordcolor="colors.discordfill" :discordfill="colors.discordcolor"/>
+        <DiscordCorner :background="background" :discordEyes="discordEyes" customLink="https://discord.gg/Dkg79tc" :isRainbow="isRainbow" :animationStyle="animationStyle" id="discordcorner" :discordcolor="colors.discordfill" :discordfill="colors.discordcolor"/>
+        <Intro/>
+        <DiscordText :background="background" :discordEyes="discordEyes" :isRainbow="isRainbow" :animationStyle="animationStyle" ref="discordtext" :standardText="standardText" :discordfill="colors.discordfill" :discordcolor="colors.discordcolor" />
+      </div>
+      <MainBody id="mainbody" />
     </div>
-    <MainBody/>
   </div>
 </template>
 
@@ -63,8 +65,14 @@ export default {
 <style>
 html,body {
   height: 100%;
+  width: 100%;
   margin: 0px;
   /*background-color: #2C2F33;*/
+}
+.wrapper {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -72,7 +80,15 @@ html,body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #FFFFFF;
-  height:100%
+  height: 100%;
+}
+#top {
+  flex: 0;
+  height: 120px;
+}
+#mainbody {
+  flex: 1;
+  height: 100%;
 }
 #discordcorner {
 	position: absolute;
