@@ -55,7 +55,7 @@ class Component(ApplicationSession):
                     return "sorry. no. only works in select few channels."
 
             try:
-                await self.register(send_message, "nntin.github.discord-web-bridge.rpc")
+                await self.register(send_message, "nntin.github.discordwebbridge.channel.send_message_rpc")
             except autobahn.wamp.exception.ApplicationError as error:
                 print("---ERROR---")
                 print(error)
@@ -65,7 +65,6 @@ class Component(ApplicationSession):
         @client.event
         async def on_message(message):
             # todo: filter so only works in select few channels
-
             if message.author.id == client.user.id:
                 message.embeds[0].author.icon_url
                 payload = {
@@ -94,7 +93,7 @@ class Component(ApplicationSession):
                     payload[key] = ""
 
             try:
-                self.publish("nntin.github.discord-web-bridge.message.{channel_id}".format(
+                self.publish("nntin.github.discordwebbridge.channel.{channel_id}.messages".format(
                     channel_id=message.channel.id
                 ), payload, options=PublishOptions(retain=True))
             except autobahn.wamp.exception.TransportLost as error:

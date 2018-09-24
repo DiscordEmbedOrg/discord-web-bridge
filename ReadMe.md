@@ -2,7 +2,7 @@
 
 Connect Discord with your website!
 
-**WIP**: Working towards proof of concept.
+**WIP**: See TODOs. 
 
 ## How it works
 
@@ -53,13 +53,12 @@ Extended:
 - [ ] Bot Authentication: Only authenticated Discord Bot can publish to Crossbar router
 - [ ] Optional web client authentication: Privileged users with secret token have more power
 - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
-- [ ] RPC: Get text channels (for multi-text channel support)
-- [ ] RPC: Get servers (for multi-server support)
 - [ ] Markdown support
 - [ ] Link formatting support
 - [ ] Emoji support
 - [ ] Discord syntax support (<@userid>, <#channel_id>, ...)
 - [ ] Do [pattern-based subscription](https://crossbar.io/docs/Pattern-Based-Subscriptions/)
+- [ ] Various crossbar topics see crossbar/crossbar_topics.md
 
 ## Issues
 

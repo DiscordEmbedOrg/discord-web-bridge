@@ -215,7 +215,7 @@ export default {
         });
       }
       console.log("Subscribing to topic.")
-      session.subscribe("nntin.github.discord-web-bridge.message.398907517326852097", on_message).then(
+      session.subscribe("nntin.github.discordwebbridge.channel.398907517326852097.messages", on_message).then(
         function (res) {
           that.subscription = res
           that.retrieve_history()
@@ -240,7 +240,7 @@ export default {
           "channel": this.form_message.channel_id
         }
 
-        window.session.call("nntin.github.discord-web-bridge.rpc", [JSON.stringify(payload)]).then(
+        window.session.call("nntin.github.discordwebbridge.channel.send_message_rpc", [JSON.stringify(payload)]).then(
           function (res) {
             console.log("Result:", res);
           }
