@@ -1,6 +1,7 @@
 import asyncio
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import PublishOptions
+import autobahn
 from bot.config import config
 from discord.ext.commands import Bot
 from discord import Embed
@@ -8,6 +9,7 @@ from datetime import datetime
 import random
 import json
 from discord.embeds import _EmptyEmbed
+import sys
 
 
 event_loop = asyncio.get_event_loop()
@@ -52,7 +54,13 @@ class Component(ApplicationSession):
                 else:
                     return "sorry. no. only works in select few channels."
 
-            await self.register(send_message, "nntin.github.discord-web-bridge.rpc")
+            try:
+                await self.register(send_message, "nntin.github.discord-web-bridge.rpc")
+            except autobahn.wamp.exception.ApplicationError as error:
+                print("---ERROR---")
+                print(error)
+                print("-----------")
+                sys.exit("Remote Procedure Call could not be registered but is needed.")
 
         @client.event
         async def on_message(message):
@@ -85,10 +93,16 @@ class Component(ApplicationSession):
                 if isinstance(value, _EmptyEmbed):
                     payload[key] = ""
 
-            # self.publish("nntin.github.discord-web-bridge.message", payload)
-            self.publish("nntin.github.discord-web-bridge.message.{channel_id}".format(
-                channel_id=message.channel.id
-            ), payload, options=PublishOptions(retain=True))
+            try:
+                self.publish("nntin.github.discord-web-bridge.message.{channel_id}".format(
+                    channel_id=message.channel.id
+                ), payload, options=PublishOptions(retain=True))
+            except autobahn.wamp.exception.TransportLost as error:
+                print("---ERROR---")
+                print(error)
+                print(message)
+                print(payload)
+                print("-----------")
 
         event_loop.create_task(client.start(config["discord"]["bot_token"], bot=True, reconnect=True))
 

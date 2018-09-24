@@ -181,7 +181,7 @@ export default {
         'Nyx Assassin', 'Naga Siren', 'Keeper of the Light', 'Io', 'Visage', 'Slark',
         'Medusa', 'Troll Warlord', 'Centaur Warrunner', 'Magnus', 'Timbersaw',
         'Bristleback', 'Tusk', 'Skywrath Mage', 'Abaddon', 'Elder Titan',
-        'Legion Commander', 'Ember Spirit', 'Earth Spirit', 'Terrorblade', 'Phoenix', 
+        'Legion Commander', 'Ember Spirit', 'Earth Spirit', 'Terrorblade', 'Phoenix',
         'Oracle', 'Techies', 'Winter Wyvern', 'Arc Warden', 'Underlord', 'Monkey King',
         'Pangolier', 'Dark Willow', 'Grimstroke']
     }
@@ -227,6 +227,7 @@ export default {
 
   },
   methods: {
+    // todo: https://www.w3schools.com/howto/howto_js_toggle_class.asp
     update: function() {
       console.log("hello")
     },

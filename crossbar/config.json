@@ -69,6 +69,10 @@
                                 "type": "nodeinfo"
                             }
                         }
+                    },
+                    "options": {
+                        "auto_ping_interval": 10000,
+                        "auto_ping_timeout": 5000
                     }
                 }
             ]
