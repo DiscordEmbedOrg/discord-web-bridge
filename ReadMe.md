@@ -59,6 +59,7 @@ Extended:
 - [ ] Link formatting support
 - [ ] Emoji support
 - [ ] Discord syntax support (<@userid>, <#channel_id>, ...)
+- [ ] Do [pattern-based subscription](https://crossbar.io/docs/Pattern-Based-Subscriptions/)
 
 ## Issues
 

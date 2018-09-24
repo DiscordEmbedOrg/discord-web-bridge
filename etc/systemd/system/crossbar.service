@@ -1,0 +1,14 @@
+[Unit]
+Description=crossbar
+After=multi-user.target
+[Service]
+WorkingDirectory=/home/tin/discord-web-bridge/crossbar
+User=root
+Group=root
+ExecStart=/usr/local/bin/crossbar start
+Type=idle
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target
