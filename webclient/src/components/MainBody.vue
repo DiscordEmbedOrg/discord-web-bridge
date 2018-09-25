@@ -34,6 +34,7 @@
               <div style="width: 100%; height: 0px; visibility: hidden;"></div>
               <div class="container-0">
               <div style="height: 16px;"></div>
+                <!--
                 <div class="containerDefault-1ZnADq" draggable="true">
                   <div tabindex="0" class="wrapperSelectedText-3dSUjC wrapper-KpKNwI" role="button">
                     <div class="contentSelectedText-3wUhMi content-20Aix8">
@@ -55,6 +56,21 @@
                         </svg>
                       </div>
                       <div class="nameDefaultText-24KCy5 name-3M0b8v overflowEllipsis-jeThUf" style="flex: 1 1 auto;">bbb</div>
+                    </div>
+                  </div>
+                </div>
+                -->
+                <div v-for="text_channel in text_channels">
+                  <div class="containerDefault-1ZnADq" draggable="true">
+                    <div tabindex="0" class="wrapperDefaultText-2IWcE8 wrapper-KpKNwI" role="button">
+                      <div class="contentDefaultText-3vZplL content-20Aix8">
+                        <div class="marginReset-3RfdVe" style="flex: 0 0 auto;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="colorDefaultText-oas-QM icon-sxakjD">
+                            <path class="foreground-2W-aJk" fill="currentColor" d="M2.27333333,12 L2.74666667,9.33333333 L0.08,9.33333333 L0.313333333,8 L2.98,8 L3.68666667,4 L1.02,4 L1.25333333,2.66666667 L3.92,2.66666667 L4.39333333,0 L5.72666667,0 L5.25333333,2.66666667 L9.25333333,2.66666667 L9.72666667,0 L11.06,0 L10.5866667,2.66666667 L13.2533333,2.66666667 L13.02,4 L10.3533333,4 L9.64666667,8 L12.3133333,8 L12.08,9.33333333 L9.41333333,9.33333333 L8.94,12 L7.60666667,12 L8.08,9.33333333 L4.08,9.33333333 L3.60666667,12 L2.27333333,12 L2.27333333,12 Z M5.02,4 L4.31333333,8 L8.31333333,8 L9.02,4 L5.02,4 L5.02,4 Z" transform="translate(1.333 2)"></path>
+                          </svg>
+                        </div>
+                        <div class="nameDefaultText-24KCy5 name-3M0b8v overflowEllipsis-jeThUf" style="flex: 1 1 auto;">{{ text_channel.text_channel_name }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -155,6 +171,7 @@ export default {
         channel_id: "398907517326852097"
       },
       messages: [],
+      text_channels: [{text_channel_id: "123456", text_channel_name: "placeholder"}],
       received_message: {
         content: "",
         created_at: "",
@@ -201,13 +218,26 @@ export default {
       window.session = session;
       console.log("Websocket is now open!")
 
+
+      var payload = {
+        "guild_id": "232769614004748288",
+        "token": "123456"
+      }
+      session.call("nntin.github.discordwebbridge.server.get_channels_rpc", [JSON.stringify(payload)]).then(
+        function (res) {
+          console.log("Text Channels:", res);
+          that.text_channels = res;
+        }
+      )
+
+
       function on_message(args) {
         that.received_message = args[0]
         that.messages.push(args[0])
         //while (that.messages.length > 10) {
         //  that.messages.shift();
         //}
-        console.log(that.received_message)
+        //console.log(that.received_message)
 
         that.$nextTick(function () {
           var scroller = document.getElementById("scroller");
@@ -256,11 +286,11 @@ export default {
             console.log("got history for " + history.length + " events");
             //for (var i = 0; i < history.length; ++i) {
             for (var i = history.length - 1; i > -1; i--) {
-              console.log(history[i].timestamp, history[i].publication, history[i].args[0]);
+              //console.log(history[i].timestamp, history[i].publication, history[i].args[0]);
               that.messages.push(history[i].args[0]);
             }
             //that.messages = history;
-            console.log(that.messages)
+            //console.log(that.messages)
 
             that.$nextTick(function () {
               var scroller = document.getElementById("scroller");

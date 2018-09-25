@@ -2,8 +2,6 @@
 
 Connect Discord with your website!
 
-**WIP**: See TODOs. 
-
 ## How it works
 
 This project is divided into 3 modules:
@@ -31,7 +29,7 @@ Basic knowledge about maintaining a VPS and working with Python and Node are req
 
 Start Crossbar router. See ReadMe in crossbar folder.  
 Start Discord bot. See ReadMe in bot folder.  
-Start the web server. See ReadMe in webclient folder.
+Start the web server/deploy the web clients. See ReadMe in webclient folder.
 
 ## TODOs
 
@@ -50,7 +48,7 @@ Basic:
   - [x] Retrieve message history
 
 Extended:
-- [ ] Bot Authentication: Only authenticated Discord Bot can publish to Crossbar router
+- [ ] [Bot Authentication](https://crossbar.io/docs/Authorization/): Only authenticated Discord Bot can publish to Crossbar router
 - [ ] Optional web client authentication: Privileged users with secret token have more power
 - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
 - [ ] Markdown support
@@ -77,3 +75,10 @@ I plan on addressing those issues. Just bear in mind they exist when making use 
 
 I plan on releasing a public bot that supports multiple servers. However for now I am solely focusing on a single server.  
 A public bot that allows anyone to chat in any registered server without any form of authentication is at risk of being used as a tool to spam.  
+
+## #RTFM
+
+[Crossbar](https://crossbar.io/docs/)  
+[Autobahn|Python](https://autobahn.readthedocs.io/en/latest/)  
+[Autobahn|JS](https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md)  
+[Discord.py Rewrite](https://discordpy.readthedocs.io/en/rewrite/api.html)

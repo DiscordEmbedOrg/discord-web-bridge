@@ -1,15 +1,15 @@
+import sys
 import asyncio
-from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
-from autobahn.wamp.types import PublishOptions
-import autobahn
-from bot.config import config
-from discord.ext.commands import Bot
-from discord import Embed
-from datetime import datetime
 import random
 import json
+import autobahn
+from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
+from autobahn.wamp.types import PublishOptions
+from discord import Embed
+from discord.ext.commands import Bot
 from discord.embeds import _EmptyEmbed
-import sys
+from datetime import datetime
+from bot.config import config
 
 
 event_loop = asyncio.get_event_loop()
@@ -35,6 +35,8 @@ class Component(ApplicationSession):
         async def on_ready():
             def send_message(payload):
                 payload = json.loads(payload)
+                # todo: implement check so discord bot can only posts in select few channels
+                # todo: payload["token"]
 
                 random.seed(payload["author_name"])
                 embed = Embed(colour=random.randint(0, 16777215),
@@ -45,6 +47,7 @@ class Component(ApplicationSession):
 
                 # todo: implement check so discord bot can only posts in select few channels
                 # todo: send message over webhook?
+                # todo: restrict size of message <2000
                 allowed_channels = [398907517326852097, 412326162430427146]
                 channel_id = int(payload["channel"])
                 if channel_id in allowed_channels:
@@ -54,7 +57,22 @@ class Component(ApplicationSession):
                 else:
                     return "sorry. no. only works in select few channels."
 
+            def get_channels(payload):
+                payload = json.loads(payload)
+                guild = client.get_guild(int(payload["guild_id"]))
+                member = guild.get_member(client.user.id)
+
+                res = []
+                for text_channel in guild.text_channels:
+                    if text_channel.permissions_for(member).read_messages:
+                        res.append({
+                            "text_channel_id": str(text_channel.id),
+                            "text_channel_name": text_channel.name
+                        })
+                return res
+
             try:
+                await self.register(get_channels, "nntin.github.discordwebbridge.server.get_channels_rpc")
                 await self.register(send_message, "nntin.github.discordwebbridge.channel.send_message_rpc")
             except autobahn.wamp.exception.ApplicationError as error:
                 print("---ERROR---")
@@ -66,7 +84,6 @@ class Component(ApplicationSession):
         async def on_message(message):
             # todo: filter so only works in select few channels
             if message.author.id == client.user.id:
-                message.embeds[0].author.icon_url
                 payload = {
                     "user": message.embeds[0].author.name,
                     "user_avatar": message.embeds[0].author.icon_url,
