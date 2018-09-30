@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper">
-    <div class="debug" style="display: none">
+    <div class="debug"><!--style="display: none"-->
       <div>
         <input type="text" v-model="form_message.user" placeholder="Your user name">
         <input type="text" v-model="form_message.user_avatar" placeholder="Avatar URL">
         <input type="text" v-model="form_message.channel_id" placeholder="Channel">
         <button v-on:click="retrieve_history">retrieve history</button>
-        <button v-on:click="test_method">test</button>
+        <button v-on:click="subscribe('400379102588174338')">test</button>
       </div>
       <div id="chat_send_message_box">
         <input type="text_method" v-model="form_message.content" placeholder="Content">
@@ -18,7 +18,7 @@
           <div class="flexChild-faoVW3" style="flex: 0 0 auto;">
             <div class="container-2Rl01u">
               <header class="header-2o-2hj">
-                <span class="name-3YKhmS">test</span>
+                <span class="name-3YKhmS">{{ server.name }}</span>
                 <svg width="18" height="18" class="button-1w5pas">
                   <g fill="none" fill-rule="evenodd">
                     <path d="M0 0h18v18H0"></path>
@@ -61,18 +61,22 @@
                 </div>
                 -->
                 <div v-for="text_channel in text_channels">
-                  <div class="containerDefault-1ZnADq" draggable="true">
-                    <div tabindex="0" class="wrapperDefaultText-2IWcE8 wrapper-KpKNwI" role="button">
-                      <div class="contentDefaultText-3vZplL content-20Aix8">
-                        <div class="marginReset-3RfdVe" style="flex: 0 0 auto;">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="colorDefaultText-oas-QM icon-sxakjD">
-                            <path class="foreground-2W-aJk" fill="currentColor" d="M2.27333333,12 L2.74666667,9.33333333 L0.08,9.33333333 L0.313333333,8 L2.98,8 L3.68666667,4 L1.02,4 L1.25333333,2.66666667 L3.92,2.66666667 L4.39333333,0 L5.72666667,0 L5.25333333,2.66666667 L9.25333333,2.66666667 L9.72666667,0 L11.06,0 L10.5866667,2.66666667 L13.2533333,2.66666667 L13.02,4 L10.3533333,4 L9.64666667,8 L12.3133333,8 L12.08,9.33333333 L9.41333333,9.33333333 L8.94,12 L7.60666667,12 L8.08,9.33333333 L4.08,9.33333333 L3.60666667,12 L2.27333333,12 L2.27333333,12 Z M5.02,4 L4.31333333,8 L8.31333333,8 L9.02,4 L5.02,4 L5.02,4 Z" transform="translate(1.333 2)"></path>
-                          </svg>
+                  <a class="fill-div" v-on:click="subscribe(text_channel.id)">
+                    <div class="containerDefault-1ZnADq" draggable="true">
+                      <div tabindex="0" class="wrapper-KpKNwI" role="button">
+                        <div class="contentDefaultText-3vZplL content-20Aix8">
+                          <div class="marginReset-3RfdVe" style="flex: 0 0 auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="colorDefaultText-oas-QM icon-sxakjD">
+                              <path class="foreground-2W-aJk" fill="currentColor" d="M2.27333333,12 L2.74666667,9.33333333 L0.08,9.33333333 L0.313333333,8 L2.98,8 L3.68666667,4 L1.02,4 L1.25333333,2.66666667 L3.92,2.66666667 L4.39333333,0 L5.72666667,0 L5.25333333,2.66666667 L9.25333333,2.66666667 L9.72666667,0 L11.06,0 L10.5866667,2.66666667 L13.2533333,2.66666667 L13.02,4 L10.3533333,4 L9.64666667,8 L12.3133333,8 L12.08,9.33333333 L9.41333333,9.33333333 L8.94,12 L7.60666667,12 L8.08,9.33333333 L4.08,9.33333333 L3.60666667,12 L2.27333333,12 L2.27333333,12 Z M5.02,4 L4.31333333,8 L8.31333333,8 L9.02,4 L5.02,4 L5.02,4 Z" transform="translate(1.333 2)"></path>
+                            </svg>
+                          </div>
+                          <div class="nameDefaultText-24KCy5 name-3M0b8v overflowEllipsis-jeThUf" style="flex: 1 1 auto;">{{ text_channel.name }}</div>
                         </div>
-                        <div class="nameDefaultText-24KCy5 name-3M0b8v overflowEllipsis-jeThUf" style="flex: 1 1 auto;">{{ text_channel.text_channel_name }}</div>
                       </div>
                     </div>
-                  </div>
+                  </a>
+
+
                 </div>
               </div>
               <div style="width: 100%; height: 0px; visibility: hidden;"></div>
@@ -94,8 +98,7 @@
             <div class="messagesWrapper-3lZDfY">
               <div class="scroller-wrap scrollerWrap-2su1QI">
                 <div class="messages-3amgkR scroller" id="scroller">
-                  <div v-for="message in messages">
-                    <div class="containerCozyBounded-1rKFAn containerCozy-jafyvG container-1YxwTf">
+                    <div v-for="(message, index) in messages" :key="index" class="containerCozyBounded-1rKFAn containerCozy-jafyvG container-1YxwTf">
                       <div class="messageCozy-2JPAPA message-1PNnaP">
                         <div class="headerCozy-2N9HOL">
                           <div class="wrapper-2F3Zv8 large-3ChYtB avatar-17mtNa" tabindex="-1">
@@ -114,7 +117,6 @@
                           </div>
                         </div>
                       </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -171,13 +173,18 @@ export default {
         channel_id: "398907517326852097"
       },
       messages: [],
-      text_channels: [{text_channel_id: "123456", text_channel_name: "placeholder"}],
+      text_channels: [{id: "123456", name: "placeholder"}],
+      viewed_text_channel_id: null,
       received_message: {
         content: "",
         created_at: "",
         id: null,
         user: "",
         user_avatar: ""
+      },
+      server: {
+        name: "placeholder",
+        picture: "https://i.imgur.com/Hqq6ii1.png"
       },
       subscription: null,
       usernames: ['Anti-Mage', 'Axe', 'Bane', 'Bloodseeker', 'Crystal Maiden',
@@ -227,37 +234,48 @@ export default {
         function (res) {
           console.log("Text Channels:", res);
           that.text_channels = res;
+          that.subscribe(res[0].id);
         }
       )
-
-
-      function on_message(args) {
-        that.received_message = args[0]
-        that.messages.push(args[0])
-        //while (that.messages.length > 10) {
-        //  that.messages.shift();
-        //}
-        //console.log(that.received_message)
-
-        that.$nextTick(function () {
-          var scroller = document.getElementById("scroller");
-          scroller.scrollTop = scroller.scrollHeight;
-        });
-      }
-      console.log("Subscribing to topic.")
-      session.subscribe("nntin.github.discordwebbridge.channel.398907517326852097.messages", on_message).then(
+      session.call("nntin.github.discordwebbridge.server.get_info_rpc", [JSON.stringify(payload)]).then(
         function (res) {
-          that.subscription = res
-          that.retrieve_history()
+          console.log("Server info:", res);
+          that.server = res;
         }
-      );
-
+      )
     };
     connection.open();
 
   },
   methods: {
     // todo: https://www.w3schools.com/howto/howto_js_toggle_class.asp
+    subscribe: function(textchannel_id) {
+      var that = this;
+      that.viewed_text_channel_id = textchannel_id;
+      if (that.subscription !== null) {
+        that.subscription.unsubscribe();
+      }
+      if(typeof window.session !== "undefined") {
+        function on_message(args) {
+          that.received_message = args[0]
+          that.messages.push(args[0])
+
+          that.$nextTick(function () {
+            var scroller = document.getElementById("scroller");
+            scroller.scrollTop = scroller.scrollHeight;
+          });
+        }
+        console.log("Subscribing to topic.")
+        // 398907517326852097
+        window.session.subscribe("nntin.github.discordwebbridge.channel." + textchannel_id + ".messages", on_message).then(
+          function (res) {
+            that.subscription = res
+            // this throws error since not every channel has history enabled. that's okay.
+            that.retrieve_history()
+          }
+        );
+      }
+    },
     update: function() {
       console.log("hello")
     },
@@ -267,8 +285,9 @@ export default {
           "author_name": this.form_message.user,
           "author_avatar_url": this.form_message.user_avatar,
           "content": this.form_message.content,
-          "channel": this.form_message.channel_id
+          "channel": this.viewed_text_channel_id
         }
+        console.log(this.viewed_text_channel_id);
 
         window.session.call("nntin.github.discordwebbridge.channel.send_message_rpc", [JSON.stringify(payload)]).then(
           function (res) {
@@ -305,6 +324,11 @@ export default {
     },
     test_method: function() {
     }
+  },
+  watch: {
+    viewed_text_channel_id: function () {
+      // give visual feedback of which text channel is currently selected.
+    }
   }
 }
 </script>
@@ -340,6 +364,13 @@ export default {
 
 .textArea-2Spzkt {
   color: #fff;
+}
+
+a.fill-div {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
 }
 
 

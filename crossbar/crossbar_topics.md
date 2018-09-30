@@ -15,3 +15,4 @@
 
 - [x] `nntin.github.discordwebbridge.channel.send_message_rpc`
 - [x] `nntin.github.discordwebbridge.server.get_channels_rpc`
+- [ ] `nntin.github.discordwebbridge.server.get_info_rpc`

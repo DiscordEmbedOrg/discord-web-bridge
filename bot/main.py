@@ -48,32 +48,40 @@ class Component(ApplicationSession):
                 # todo: implement check so discord bot can only posts in select few channels
                 # todo: send message over webhook?
                 # todo: restrict size of message <2000
-                allowed_channels = [398907517326852097, 412326162430427146]
                 channel_id = int(payload["channel"])
-                if channel_id in allowed_channels:
-                    channel = client.get_channel(channel_id)
-                    event_loop.create_task(channel.send(embed=embed))
-                    return "success"
-                else:
-                    return "sorry. no. only works in select few channels."
+                channel = client.get_channel(channel_id)
+                event_loop.create_task(channel.send(embed=embed))
+                return "success"
 
             def get_channels(payload):
                 payload = json.loads(payload)
                 guild = client.get_guild(int(payload["guild_id"]))
-                member = guild.get_member(client.user.id)
+                #member = guild.get_member(client.user.id)
+                member = guild.me
 
                 res = []
                 for text_channel in guild.text_channels:
                     if text_channel.permissions_for(member).read_messages:
                         res.append({
-                            "text_channel_id": str(text_channel.id),
-                            "text_channel_name": text_channel.name
+                            "id": str(text_channel.id),
+                            "name": text_channel.name
                         })
+                return res
+
+            def get_info(payload):
+                payload = json.loads(payload)
+                guild = client.get_guild(int(payload["guild_id"]))
+                res = {'name': guild.name,
+                       'picture': "https://cdn.discordapp.com/icons/{server_id}/{token}".format(
+                           server_id=guild.id, token=guild.icon
+                       )}
                 return res
 
             try:
                 await self.register(get_channels, "nntin.github.discordwebbridge.server.get_channels_rpc")
                 await self.register(send_message, "nntin.github.discordwebbridge.channel.send_message_rpc")
+                await self.register(get_info, "nntin.github.discordwebbridge.server.get_info_rpc")
+
             except autobahn.wamp.exception.ApplicationError as error:
                 print("---ERROR---")
                 print(error)
@@ -82,7 +90,6 @@ class Component(ApplicationSession):
 
         @client.event
         async def on_message(message):
-            # todo: filter so only works in select few channels
             if message.author.id == client.user.id:
                 payload = {
                     "user": message.embeds[0].author.name,

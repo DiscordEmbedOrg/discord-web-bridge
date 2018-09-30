@@ -57,6 +57,7 @@ Extended:
 - [ ] Discord syntax support (<@userid>, <#channel_id>, ...)
 - [ ] Do [pattern-based subscription](https://crossbar.io/docs/Pattern-Based-Subscriptions/)
 - [ ] Various crossbar topics see crossbar/crossbar_topics.md
+- [ ] Use localStorage to save username, avatar URL, ...
 
 ## Issues
 
