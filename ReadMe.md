@@ -48,7 +48,7 @@ Basic:
   - [x] Retrieve message history
 
 Extended:
-- [ ] [Bot Authentication](https://crossbar.io/docs/Authorization/): Only authenticated Discord Bot can publish to Crossbar router
+- [x] [Bot Authentication](https://crossbar.io/docs/Authorization/): Only authenticated Discord Bot can publish to Crossbar router
 - [ ] Optional web client authentication: Privileged users with secret token have more power
 - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
 - [ ] Markdown support

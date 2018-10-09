@@ -1,6 +1,13 @@
 {
   "crossbar": {
-    "ws": "http://localhost:8080/ws"
+    "ws": "ws://localhost:8080/ws",
+    "realm": "realm1",
+    "auth": {
+      "wampcra": {
+        "secret": "12345"
+      }
+    },
+    "role": "backend"
   },
   "discord": {
     "bot_token": ""

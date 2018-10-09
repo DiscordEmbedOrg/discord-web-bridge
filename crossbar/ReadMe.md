@@ -8,6 +8,8 @@ cd discord-web-bridge/crossbar
 crossbar start
 ```
 
+**Make sure you changed the secret token in config.json.**
+
 # Crossbar topics
 
 see crossbar/crossbar_topics.md

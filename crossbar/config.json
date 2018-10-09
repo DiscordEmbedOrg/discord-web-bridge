@@ -11,7 +11,26 @@
                     "name": "realm1",
                     "roles": [
                         {
-                            "name": "anonymous",
+                            "name": "backend",
+                            "permissions": [
+                                {
+                                    "uri": "*",
+                                    "allow": {
+                                        "call": true,
+                                        "register": true,
+                                        "publish": true,
+                                        "subscribe": true
+                                    },
+                                    "disclose": {
+                                        "caller": true,
+                                        "publisher": true
+                                    },
+                                    "cache": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "frontend",
                             "permissions": [
                                 {
                                     "uri": "*",
@@ -31,8 +50,8 @@
                                     "uri": "nntin.github.discordwebbridge.*",
                                     "allow": {
                                         "call": true,
-                                        "register": true,
-                                        "publish": true,
+                                        "register": false,
+                                        "publish": false,
                                         "subscribe": true
                                     }
                                 },
@@ -58,30 +77,25 @@
             ],
             "transports": [
                 {
-                    "type": "universal",
+                    "type": "websocket",
                     "endpoint": {
+                        "interface": "0.0.0.0",
                         "type": "tcp",
                         "port": 8080
                     },
-                    "rawsocket": {
-                    },
-                    "websocket": {
-                        "ws": {
-                            "type": "websocket"
-                        }
-                    },
-                    "web": {
-                        "paths": {
-                            "/": {
-                                "type": "static",
-                                "directory": "../web",
-                                "options": {
-                                    "enable_directory_listing": true
+                    "auth": {
+                        "wampcra": {
+                            "type": "static",
+                            "users": {
+                                "backend": {
+                                    "secret": "12345",
+                                    "role": "backend"
                                 }
-                            },
-                            "info": {
-                                "type": "nodeinfo"
                             }
+                        },
+                        "anonymous": {
+                            "type": "static",
+                            "role": "frontend"
                         }
                     }
                 }

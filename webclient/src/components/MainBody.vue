@@ -217,7 +217,7 @@ export default {
 
     var connection = new autobahn.Connection({
       url: this.myJson.ws,
-      realm: 'realm1'
+      realm: this.myJson.realm
     });
     var that = this
 

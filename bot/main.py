@@ -5,6 +5,7 @@ import json
 import autobahn
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import PublishOptions
+from autobahn.wamp import auth
 from discord import Embed
 from discord.ext.commands import Bot
 from discord.embeds import _EmptyEmbed
@@ -30,7 +31,19 @@ def datetime_to_string(datetime_object):
 
 
 class Component(ApplicationSession):
-    async def onJoin(self, details):
+    def onConnect(self):
+        self.join(config["crossbar"]["realm"],
+                  list(config["crossbar"]["auth"].keys()),
+                  config["crossbar"]["role"])
+
+    def onChallenge(self, challenge):
+        assert challenge.method == "wampsscra", "don't know how to handle authmethod {}".format(challenge.method)
+
+        signature = auth.compute_wcs(config["crossbar"]["auth"][challenge.method]["secret"].encode("utf8"),
+                                     challenge.extra["challenge"].encode("utf8"))
+        return signature.decode("ascii")
+
+    def onJoin(self, details):
         @client.event
         async def on_ready():
             def send_message(payload):
