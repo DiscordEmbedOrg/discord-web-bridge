@@ -37,7 +37,7 @@ class Component(ApplicationSession):
                   config["crossbar"]["role"])
 
     def onChallenge(self, challenge):
-        assert challenge.method == "wampsscra", "don't know how to handle authmethod {}".format(challenge.method)
+        assert challenge.method == "wampcra", "don't know how to handle authmethod {}".format(challenge.method)
 
         signature = auth.compute_wcs(config["crossbar"]["auth"][challenge.method]["secret"].encode("utf8"),
                                      challenge.extra["challenge"].encode("utf8"))
