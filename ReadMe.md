@@ -58,6 +58,8 @@ Extended:
 - [ ] Do [pattern-based subscription](https://crossbar.io/docs/Pattern-Based-Subscriptions/)
 - [ ] Various crossbar topics see crossbar/crossbar_topics.md
 - [ ] Use localStorage to save username, avatar URL, ...
+- [ ] Connection recovery
+- [ ] [Microservices scaling](https://github.com/crossbario/crossbar-examples/tree/master/scaling-microservices)
 
 ## Issues
 

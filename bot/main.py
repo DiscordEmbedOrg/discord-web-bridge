@@ -1,4 +1,5 @@
 import sys
+sys.path.append("..")  # Adds higher directory to python modules path.
 import asyncio
 import random
 import json

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="debug"><!--style="display: none"-->
+    <div class="debug" style="display: none"><!--style="display: none"-->
       <div>
         <input type="text" v-model="form_message.user" placeholder="Your user name">
         <input type="text" v-model="form_message.user_avatar" placeholder="Avatar URL">
@@ -269,9 +269,10 @@ export default {
         // 398907517326852097
         window.session.subscribe("nntin.github.discordwebbridge.channel." + textchannel_id + ".messages", on_message).then(
           function (res) {
-            that.subscription = res
+            that.subscription = res;
+            that.messages = [];
             // this throws error since not every channel has history enabled. that's okay.
-            that.retrieve_history()
+            that.retrieve_history();
           }
         );
       }
