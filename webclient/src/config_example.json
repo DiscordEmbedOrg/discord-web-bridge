@@ -1,4 +1,4 @@
 {
-  "ws": "ws://localhost:8080/ws",
+  "ws": "wss://localhost:8080/ws",
   "realm": "realm1"
 }

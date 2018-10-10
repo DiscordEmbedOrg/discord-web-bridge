@@ -4,6 +4,7 @@ import asyncio
 import random
 import json
 import autobahn
+import ssl
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import PublishOptions
 from autobahn.wamp import auth
@@ -147,6 +148,7 @@ class Component(ApplicationSession):
 if __name__ == '__main__':
     url = config["crossbar"]["ws"]
     realm = config["crossbar"]["realm"]
-    runner = ApplicationRunner(url, realm)
+    ssl = ssl.SSLContext()
+    runner = ApplicationRunner(url=url, realm=realm, ssl=ssl)
     runner.run(Component)
 

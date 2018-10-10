@@ -49,6 +49,7 @@ Basic:
 
 Extended:
 - [x] [Bot Authentication](https://crossbar.io/docs/Authorization/): Only authenticated Discord Bot can publish to Crossbar router
+- [x] Register domain, register certificate at [Let's Encrypt](https://letsencrypt.org/), serve with https and wss.
 - [ ] Optional web client authentication: Privileged users with secret token have more power
 - [ ] Make it look good: Due to lack of experience on frontend: **Help wanted!**
 - [ ] Markdown support

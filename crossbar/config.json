@@ -77,25 +77,40 @@
             ],
             "transports": [
                 {
-                    "type": "websocket",
+                    "type": "web",
                     "endpoint": {
                         "interface": "0.0.0.0",
                         "type": "tcp",
-                        "port": 8080
+                        "port": 8080,
+                        "tls": {
+                            "key": "/etc/letsencrypt/live/dwb.nntin.xyz/privkey.pem",
+                            "certificate": "/etc/letsencrypt/live/dwb.nntin.xyz/cert.pem",
+                            "chain_certificates": ["/etc/letsencrypt/live/dwb.nntin.xyz/chain.pem"],
+                            "dhparam": "/etc/letsencrypt/live/dwb.nntin.xyz/dhparam.pem",
+                            "ciphers": "ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:"
+                        }
                     },
-                    "auth": {
-                        "wampcra": {
-                            "type": "static",
-                            "users": {
-                                "backend": {
-                                    "secret": "12345",
-                                    "role": "backend"
+                    "paths": {
+                        "info": {
+                            "type": "nodeinfo"
+                        },
+                        "ws": {
+                            "type": "websocket",
+                            "auth": {
+                                "wampcra": {
+                                    "type": "static",
+                                    "users": {
+                                        "backend": {
+                                            "secret": "12345",
+                                            "role": "backend"
+                                        }
+                                    }
+                                },
+                                "anonymous": {
+                                    "type": "static",
+                                    "role": "frontend"
                                 }
                             }
-                        },
-                        "anonymous": {
-                            "type": "static",
-                            "role": "frontend"
                         }
                     }
                 }
