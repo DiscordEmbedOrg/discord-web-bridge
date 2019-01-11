@@ -14,6 +14,8 @@ from discord.embeds import _EmptyEmbed
 from datetime import datetime
 from bot.config import config
 
+# todo: protected servers may only allow access if you have a token
+# todo: raise NotImplementedError
 
 event_loop = asyncio.get_event_loop()
 client = Bot(command_prefix=">>")
@@ -48,54 +50,37 @@ class Component(ApplicationSession):
     def onJoin(self, details):
         @client.event
         async def on_ready():
-            def send_message(payload):
-                payload = json.loads(payload)
-                # todo: implement check so discord bot can only posts in select few channels
-                # todo: payload["token"]
-
-                random.seed(payload["author_name"])
-                embed = Embed(colour=random.randint(0, 16777215),
-                              description=payload["content"])
-                embed.set_author(name=payload["author_name"],
-                                 icon_url=payload["author_avatar_url"] if payload["author_avatar_url"] is not ""
-                                 else meepo_pictures[random.randint(0, len(meepo_pictures) - 1)])
-
-                # todo: implement check so discord bot can only posts in select few channels
-                # todo: send message over webhook?
-                # todo: restrict size of message <2000
-                channel_id = int(payload["channel"])
-                channel = client.get_channel(channel_id)
-                event_loop.create_task(channel.send(embed=embed))
-                return "success"
+            async def send_message(payload):
+                try:
+                    print(payload)
+                    channel_id = int(payload["channel_id"])
+                    channel = client.get_channel(channel_id)
+                    await channel.send(content=payload["content"], embed=Embed.from_data(payload["embed"]))
+                    return {"info": "success"}
+                except:
+                    return {"info": "failure"}
 
             def get_channels(payload):
-                payload = json.loads(payload)
-                guild = client.get_guild(int(payload["guild_id"]))
-                #member = guild.get_member(client.user.id)
-                member = guild.me
+                guild = client.get_guild(int(payload.get("guild_id", 0)))
 
-                res = []
-                for text_channel in guild.text_channels:
-                    if text_channel.permissions_for(member).read_messages:
-                        res.append({
-                            "id": str(text_channel.id),
-                            "name": text_channel.name
-                        })
-                return res
+                if guild:
+                    res = [channel.to_dict()
+                           for channel in guild.channels
+                           if channel.permissions_for(guild.me).read_messages]
+                    return res
+                else:
+                    return {}
 
-            def get_info(payload):
-                payload = json.loads(payload)
-                guild = client.get_guild(int(payload["guild_id"]))
-                res = {'name': guild.name,
-                       'picture': "https://cdn.discordapp.com/icons/{server_id}/{token}".format(
-                           server_id=guild.id, token=guild.icon
-                       )}
+            def get_info():
+                res = {
+                    "guilds": [guild.to_dict() for guild in client.guilds]
+                }
                 return res
 
             try:
-                await self.register(get_channels, "nntin.github.discordwebbridge.server.get_channels_rpc")
-                await self.register(send_message, "nntin.github.discordwebbridge.channel.send_message_rpc")
-                await self.register(get_info, "nntin.github.discordwebbridge.server.get_info_rpc")
+                await self.register(get_info, "discordembedorg.github.bridge.basic.get_info_rpc")
+                await self.register(get_channels, "discordembedorg.github.bridge.guild.get_channels_rpc")
+                await self.register(send_message, "discordembedorg.github.bridge.channel.send_message_rpc")
 
             except autobahn.wamp.exception.ApplicationError as error:
                 print("---ERROR---")
@@ -105,35 +90,11 @@ class Component(ApplicationSession):
 
         @client.event
         async def on_message(message):
-            if message.author.id == client.user.id:
-                payload = {
-                    "user": message.embeds[0].author.name,
-                    "user_avatar": message.embeds[0].author.icon_url,
-                    "content": message.embeds[0].description,
-                    "id": message.id,
-                    "created_at": datetime_to_string(message.created_at)
-                }
-
-            else:
-                avatar_url = "https://cdn.discordapp.com/avatars/{user_id}/{avatar_token}".format(
-                    user_id=message.author.id,
-                    avatar_token=message.author.avatar
-                )
-                payload = {
-                    "user": message.author.display_name,
-                    "user_avatar": avatar_url,
-                    "content": message.content,
-                    "id": message.id,
-                    "created_at": datetime_to_string(message.created_at)
-                }
-
-            for key, value in payload.items():
-                if isinstance(value, _EmptyEmbed):
-                    payload[key] = ""
-
+            payload = message.to_dict()
+            print(payload)
             try:
-                self.publish("nntin.github.discordwebbridge.channel.{channel_id}.messages".format(
-                    channel_id=message.channel.id
+                self.publish("discordembedorg.github.bridge.server.{server_id}.channel.{channel_id}.message".format(
+                    server_id=message.guild.id, channel_id=message.channel.id
                 ), payload, options=PublishOptions(retain=True))
             except autobahn.wamp.exception.TransportLost as error:
                 print("---ERROR---")

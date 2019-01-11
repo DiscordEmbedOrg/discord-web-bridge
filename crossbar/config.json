@@ -47,7 +47,7 @@
                                     "cache": false
                                 },
                                 {
-                                    "uri": "nntin.github.discordwebbridge.*",
+                                    "uri": "discordembedorg.github.bridge.*",
                                     "allow": {
                                         "call": true,
                                         "register": false,
@@ -68,7 +68,7 @@
                         "type": "memory",
                         "event-history": [
                             {
-                                "uri": "nntin.github.discordwebbridge.channel.398907517326852097.messages",
+                                "uri": "discordembedorg.github.bridge.server.232769614004748288.channel.528614515949174824.message",
                                 "limit": 50
                             }
                         ]
@@ -110,6 +110,16 @@
                                     "type": "static",
                                     "role": "frontend"
                                 }
+                            },
+                            "options": {
+                                "auto_ping_interval": 10000,
+                                "auto_ping_timeout": 5000,
+                                "auto_ping_size": 4,
+                                "open_handshake_timeout": 2500,
+                                "close_handshake_timeout": 1000,
+                                "auto_fragment_size": 65536,
+                                "max_message_size": 1048576,
+                                "max_frame_size": 1048576
                             }
                         }
                     }
