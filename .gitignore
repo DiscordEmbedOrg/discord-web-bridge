@@ -5,3 +5,4 @@ bot/config.json
 experiment/
 webclient/src/config.json
 crossbar/advanced_config.json
+venv/*
