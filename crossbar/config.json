@@ -47,7 +47,7 @@
                                     "cache": false
                                 },
                                 {
-                                    "uri": "nntin.github.discordwebbridge.*",
+                                    "uri": "discordembedorg.github.bridge.*",
                                     "allow": {
                                         "call": true,
                                         "register": false,
@@ -68,7 +68,7 @@
                         "type": "memory",
                         "event-history": [
                             {
-                                "uri": "nntin.github.discordwebbridge.channel.398907517326852097.messages",
+                                "uri": "discordembedorg.github.bridge.server.232769614004748288.channel.528614515949174824.message",
                                 "limit": 50
                             }
                         ]
