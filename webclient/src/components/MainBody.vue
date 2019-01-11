@@ -3,7 +3,6 @@
     <div class="debug" style="display: none"><!--style="display: none"-->
       <div>
         <input type="text" v-model="form_message.user" placeholder="Your user name">
-        <input type="text" v-model="form_message.user_avatar" placeholder="Avatar URL">
         <input type="text" v-model="form_message.channel_id" placeholder="Channel">
         <button v-on:click="retrieve_history">retrieve history</button>
         <button v-on:click="subscribe('400379102588174338')">test</button>
@@ -103,13 +102,13 @@
                         <div class="headerCozy-2N9HOL">
                           <div class="wrapper-2F3Zv8 large-3ChYtB avatar-17mtNa" tabindex="-1">
                             <div class="image-33JSyf large-3ChYtB">
-                              <img class="image-33JSyf large-3ChYtB" :src="message.user_avatar">
+                              <img class="image-33JSyf large-3ChYtB" :src="get_avatar_url(message.author.id, message.author.avatar)">
                             </div>
                           </div>
                           <h2 class="headerCozyMeta-rdohGq">
-                            <span class="usernameWrapper-1S-G5O">{{ message.user }}</span>
+                            <span class="usernameWrapper-1S-G5O">{{ message.author.username }}</span>
                           </h2>
-                          <time class="timestampCozy-2hLAPV" :datetime="message.created_at"></time>
+                          <time class="timestampCozy-2hLAPV" :datetime="message.timestamp"></time>
                         </div>
                         <div class="contentCozy-3XX413 content-3dzVd8">
                           <div class="containerCozy-336-Cz container-206Blv">
@@ -168,7 +167,6 @@ export default {
       test: null,
       form_message: {
         user: "NNTin",
-        user_avatar: "",
         content: "",
         channel_id: "398907517326852097"
       },
@@ -176,11 +174,14 @@ export default {
       text_channels: [{id: "123456", name: "placeholder"}],
       viewed_text_channel_id: null,
       received_message: {
-        content: "",
-        created_at: "",
-        id: null,
-        user: "",
-        user_avatar: ""
+        timestamp: "",
+        author: {
+          username: "",
+          id: "",
+          discriminator: "",
+          avatar: "",
+          content: ""
+        }
       },
       server: {
         name: "placeholder",
@@ -214,7 +215,6 @@ export default {
     var index = Math.floor(Math.random() * this.usernames.length);
     this.form_message.user = this.usernames[index] + " " + Math.floor(Math.random() * 100000).toString()
 
-
     var connection = new autobahn.Connection({
       url: this.myJson.ws,
       realm: this.myJson.realm
@@ -230,19 +230,19 @@ export default {
         "guild_id": "232769614004748288",
         "token": "123456"
       }
-      session.call("nntin.github.discordwebbridge.server.get_channels_rpc", [JSON.stringify(payload)]).then(
+      session.call("discordembedorg.github.bridge.guild.get_channels_rpc", [payload]).then(
         function (res) {
           console.log("Text Channels:", res);
           that.text_channels = res;
           that.subscribe(res[0].id);
         }
       )
-      session.call("nntin.github.discordwebbridge.server.get_info_rpc", [JSON.stringify(payload)]).then(
-        function (res) {
-          console.log("Server info:", res);
-          that.server = res;
-        }
-      )
+      //session.call("discordembedorg.github.bridge.basic.get_info_rpc", [payload]).then(
+      //  function (res) {
+      //    console.log("Server info:", res);
+      //    that.server = res;
+      //  }
+      //)
     };
     connection.open();
 
@@ -259,6 +259,7 @@ export default {
         function on_message(args) {
           that.received_message = args[0]
           that.messages.push(args[0])
+          console.log(args)
 
           that.$nextTick(function () {
             var scroller = document.getElementById("scroller");
@@ -266,13 +267,15 @@ export default {
           });
         }
         console.log("Subscribing to topic.")
-        // 398907517326852097
-        window.session.subscribe("nntin.github.discordwebbridge.channel." + textchannel_id + ".messages", on_message).then(
+        // 232769614004748288
+        let server_id = "232769614004748288";
+        console.log("discordembedorg.github.bridge.server." + server_id + ".channel." + textchannel_id + ".message")
+        window.session.subscribe("discordembedorg.github.bridge.server." + server_id + ".channel." + textchannel_id + ".message", on_message).then(
           function (res) {
             that.subscription = res;
             that.messages = [];
             // this throws error since not every channel has history enabled. that's okay.
-            that.retrieve_history();
+            //that.retrieve_history();
           }
         );
       }
@@ -284,13 +287,32 @@ export default {
       if(typeof window.session !== "undefined" && event.which == 13 && !event.shiftKey) {
         var payload = {
           "author_name": this.form_message.user,
-          "author_avatar_url": this.form_message.user_avatar,
           "content": this.form_message.content,
           "channel": this.viewed_text_channel_id
         }
+
+        var payload = {
+          channel_id: this.viewed_text_channel_id,
+          content: this.form_message.content,
+          embed: {
+            footer: {
+              text: 'DiscordEmbedOrg',
+              icon_url: 'https://i.imgur.com/6LfN4cd.png'
+            },
+            author: {
+              name: 'linley',
+              url: 'https://github.com/DiscordEmbedOrg/discord-web-bridge',
+              icon_url: 'https://i.imgur.com/6LfN4cd.png'
+            },
+            color: 16711935,
+            type: 'rich',
+            description: 'placeholder text',
+            title: this.form_message.user
+          }
+        }
         console.log(this.viewed_text_channel_id);
 
-        window.session.call("nntin.github.discordwebbridge.channel.send_message_rpc", [JSON.stringify(payload)]).then(
+        window.session.call("discordembedorg.github.bridge.channel.send_message_rpc", [payload]).then(
           function (res) {
             console.log("Result:", res);
           }
@@ -324,7 +346,16 @@ export default {
       }
     },
     test_method: function() {
+    },
+    get_avatar_url: function(id, token) {
+      if (id != null && token != null) {
+        return "https://cdn.discordapp.com/avatars/" + id.toString() + "/" + token.toString() + ".png"
+      } else {
+        return "https://i.imgur.com/6LfN4cd.png"
+      }
     }
+  },
+  computed: {
   },
   watch: {
     viewed_text_channel_id: function () {
