@@ -3,8 +3,8 @@ Description=crossbar
 After=multi-user.target
 [Service]
 WorkingDirectory=/home/tin/discord-web-bridge/crossbar
-User=root
-Group=root
+User=tin
+Group=tin
 ExecStart=/usr/local/bin/crossbar start
 Type=idle
 Restart=always

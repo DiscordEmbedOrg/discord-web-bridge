@@ -3,8 +3,8 @@ Description=discord-web-bridge-bot
 After=multi-user.target
 [Service]
 WorkingDirectory=/home/tin/discord-web-bridge/bot
-User=root
-Group=root
+User=tin
+Group=tin
 ExecStart=/usr/bin/python3.5 /home/tin/discord-web-bridge/bot/main.py
 Type=idle
 Restart=always
